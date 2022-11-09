@@ -9,7 +9,7 @@ import math
 import glob
 import warnings
 
-import packaging
+from packaging import version
 import numpy as np
 
 from .utils import expand_path, sanatize_var_name, eval_value
@@ -828,7 +828,7 @@ def read_summary(filename, spdim='spectrum', wcoord='spec_wn',
         variables = {}
         coords = {}
 
-        sfitversion = packaging.version.parse(global_attrs['sfit4_version'])
+        sfitversion = version.parse(global_attrs['sfit4_version'])
                
         # spectrum headers (assume same header for every band)
         _ = f.readline()
@@ -844,7 +844,7 @@ def read_summary(filename, spdim='spectrum', wcoord='spec_wn',
         _ = f.readline()
         for i in range(n_gases):
             cvals = [eval_value(s) for s in f.readline().split()]
-            if sfitversion > packaging.version.parse('0.9.4.4'):
+            if sfitversion > version.parse('0.9.4.4'):
                 index, name, ret_prof, ifcell, atcol, rtcol = cvals
             else:
                 index, name, ret_prof, atcol, rtcol = cvals
@@ -857,7 +857,7 @@ def read_summary(filename, spdim='spectrum', wcoord='spec_wn',
         _ = f.readline()
         ickeys = ['index', 'wn_start', 'wn_end', 'wn_step',
                   'n_points', 'spec_opd_max', 'spec_fov']
-        if sfitversion > packaging.version.parse('0.9.4.4'):
+        if sfitversion > version.parse('0.9.4.4'):
             snr_var = ['spec_snr_initial', 'spec_snr_eff','spec_snr_fit']
             jckeys = ['index'] + snr_var
         else:
